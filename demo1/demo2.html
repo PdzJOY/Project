@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>钩子函数</title>
+	</head>
+	<body>
+		<div id="app">   
+            <p>
+                你好！{{ title }}
+            </p>
+        </div>
+        <script type="text/javascript" src="js/vue.min.js" ></script>
+        <script>
+        	var vm=new Vue({
+        		el:"#app",
+        		data:{
+        			title:""
+        		},
+        		created:function(){
+        			this.title="生命周期的子函数";
+        			console.log("created()钩子函数执行。。。");
+        		},
+        		mounted:function(){
+        			console.log(this.$el);
+        			console.log("模型的title值：",this.title);
+        			console.log("mounted()钩子函数执行中。。。。")
+        		}
+        		
+        	})
+        </script>
+	</body>
+</html>

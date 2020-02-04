@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		
+	</head>
+	<body>
+		<div id="app">
+			<fieldset>
+				<legend>商品详情</legend>
+				<p>
+					<label for="id">编号</label>
+					<input type="text" class="form-control" name="id" id="id" v-model="prod.id">
+					
+				</p>
+				<p>
+					<label for="name">名称</label>
+					<input type="text" name="name" id="name" class="form-control" v-model="prod.name">
+				</p>
+				<p>
+					<label for="price">价格</label>
+					<input type="number" name="price" id="price" class="form-control" v-model="prod.price">
+				</p>
+				<p>
+					<input type="button" class="btn btn-primary" value="删除" @click="doDelete">
+					<input type="button" class="btn btn-primary" value="保存" v-on:click="doSave">
+				</p>
+			</fieldset>
+			<input type="text" placeholder="请输入关键字：" v-model="searchKey" />
+			<table class=table>
+				<thead>	
+					<tr>
+						<th>编号</th>
+						<th>名称</th>
+						<th>价格</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="item in searchProdList">
+						<td>{{ item.id }}</td>
+						<td>{{ item.name }}</td>
+						<td>&yen;{{ item.price | priceFormat }}</td>
+						<td><a href="" @click.prevent="doDelete(item.id)">删除</a></td>
+					</tr>
+				</tbody>
+				
+			</table>
+		</div>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script>
+			var vm=new Vue({
+				el:"#app",
+				data:{
+					searchKey:"",
+					prod:{id:0,name:'',price:''},
+				    prodList:[     // 数组
+				        {id:0,name:'华为',price:7899},
+				        {id:1,name:'苹果',price:6899},
+				    ]
+				},
+				// 计算属性
+				computed:{
+					searchProdList:function(){
+						var self=this;
+						return this.prodList.filter(function(item){
+							return item.name.indexOf(self.searchKey) != -1;
+						})
+					}
+				},
+				// 过滤器
+				filters:{
+					priceFormat:function(priceval){
+						return priceval.toFixed(2)+"元";
+					}
+				},
+				// 方法
+				methods:{
+					doSave:function(){    
+						this.prodList.push(this.prod); //添加
+						console.log(this.prodList);
+						 // 清空
+						this.prod={id:0,name:'',price:0}
+					},
+					doDelete:function(id){
+						var index=this.prodList.findIndex(item=>{
+							if(item.id==id){
+								return true;
+							}
+						});
+						this.prodList.splice(index,1)
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
